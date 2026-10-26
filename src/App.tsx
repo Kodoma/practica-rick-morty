@@ -1,5 +1,5 @@
 import './App.css'
-import { Pagination, Typography } from '@mui/material'
+import { Alert, Pagination, Typography } from '@mui/material'
 import { CharacterDetail } from './features/character/components/CharacterDetail'
 import { CharacterFiltersForm } from './features/character/components/CharacterFilterForm'
 import { CharacterGrid } from './features/character/components/CharacterGrid'
@@ -10,7 +10,7 @@ import { navigate, paths, useLocation } from './lib/router'
 function App() {
   const { pathname, searchParams } = useLocation()
   const filters = parseFilters(searchParams)
-  const { isPending, data } = useCharacterList(filters)
+  const { isPending, isError, error, data } = useCharacterList(filters)
   const detailMatch = pathname.match(/^\/characters\/(\d+)(\/edit)?$/)
 
   const updateFilters = (patch: Partial<CharacterFilters>, replace = false) => {
@@ -33,10 +33,13 @@ function App() {
         value={filters}
         onChange={(next) => updateFilters({ ...next, page: 1 }, true)}
       />
-      {isPending || !data ? (
+      {isPending ? (
         <Typography variant="h6" component="p" sx={{ mt: 2 }}>
           Cargando personajes...
         </Typography>
+      ) : isError ? (
+        // Antes este caso caía en "Cargando..." para siempre.
+        <Alert severity="error">{error.message}</Alert>
       ) : (
         <CharacterGrid characters={data.results} />
       )}

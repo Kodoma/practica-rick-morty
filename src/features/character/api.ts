@@ -10,6 +10,9 @@ export async function fetchCharacterPage(
   const response = await fetch(`https://rickandmortyapi.com/api/character/?${queryParams}`, {
     signal,
   })
+  // La API responde 404 cuando la búsqueda no encuentra nada.
+  // Para el usuario eso no es un error: es una lista vacía.
+  if (response.status === 404) return { info: { count: 0, pages: 0 }, results: [] }
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`)
   }
