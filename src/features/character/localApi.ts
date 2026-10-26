@@ -1,4 +1,5 @@
-import type { CharacterEdit, CharacterFormValues } from './schema'
+import { z } from 'zod'
+import { type CharacterEdit, CharacterEditsSchema, type CharacterFormValues } from './schema'
 
 // ── json-server (lectura/escritura) ───────────────────────────────
 const LOCAL_API = import.meta.env.VITE_LOCAL_API_URL ?? 'http://localhost:3001'
@@ -8,7 +9,7 @@ export async function fetchEdits(signal?: AbortSignal): Promise<CharacterEdit[]>
   if (!res.ok) {
     throw new Error(`HTTP error! status: ${res.status}`)
   }
-  return await (res.json() as Promise<CharacterEdit[]>)
+  return z.array(CharacterEditsSchema).parse(await res.json())
 }
 
 /** POST si es nueva, PUT si ya existía. json-server 1.x ignora el id que le mandamos,
@@ -26,5 +27,5 @@ export async function saveEdit(
   if (!res.ok) {
     throw new Error(`HTTP error! status: ${res.status}`)
   }
-  return await (res.json() as Promise<CharacterEdit>)
+  return CharacterEditsSchema.parse(await res.json())
 }

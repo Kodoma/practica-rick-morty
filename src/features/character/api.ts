@@ -1,5 +1,10 @@
-import type z from 'zod'
-import type { Character, CharacterFilters, CharacterPage, CharacterPageSchema } from './schema'
+import {
+  type Character,
+  type CharacterFilters,
+  type CharacterPage,
+  CharacterPageSchema,
+  CharacterSchema,
+} from './schema'
 
 export async function fetchCharacterPage(
   { page, name, status }: CharacterFilters,
@@ -16,7 +21,9 @@ export async function fetchCharacterPage(
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`)
   }
-  return response.json() as Promise<z.infer<typeof CharacterPageSchema>>
+  // parse valida la respuesta: si la forma no coincide tira un error claro,
+  // y si pasa, el resultado ya está tipado. `as` no chequeaba nada.
+  return CharacterPageSchema.parse(await response.json())
 }
 
 export async function fetchCharacterById(id: number, signal?: AbortSignal): Promise<Character> {
@@ -24,5 +31,5 @@ export async function fetchCharacterById(id: number, signal?: AbortSignal): Prom
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`)
   }
-  return response.json() as Promise<Character>
+  return CharacterSchema.parse(await response.json())
 }
