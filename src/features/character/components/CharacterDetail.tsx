@@ -6,12 +6,15 @@ import { CharacterForm } from './CharacterForm'
 
 export function CharacterDetail({ id, editing }: { id: number; editing: boolean }) {
   const { isPending, isError, data: character, error } = useCharacterById(id)
-  const { data: edits } = useEdits()
+  const { data: edits, isPending: editsPending } = useEdits()
   const save = useSaveEdit()
 
   const edit = edits?.find((e) => e.characterId === id)
 
-  if (isPending) {
+  // Esperamos también a las ediciones. Si no, al editar antes de que carguen,
+  // `edit` es undefined y se crea un duplicado (POST en vez de PUT).
+  // Pasa lo mismo si alguien entra directo a /characters/1/edit.
+  if (isPending || editsPending) {
     return (
       <Typography variant="h6" component="p" sx={{ mt: 2 }}>
         Cargando personaje...
