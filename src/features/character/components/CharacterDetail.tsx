@@ -1,8 +1,8 @@
-import { Alert, Button, Chip, Stack, Typography } from "@mui/material";
-import { navigate, paths, RouterLink } from "../../../lib/router";
-import { useCharacterById, useEdits, useSaveEdit } from "../query";
-import { CharacterCard } from "./CharacterCard";
-import { CharacterForm } from "./CharacterForm";
+import { Alert, Button, Chip, Stack, Typography } from '@mui/material'
+import { navigate, paths, RouterLink } from '../../../lib/router'
+import { useCharacterById, useEdits, useSaveEdit } from '../query'
+import { CharacterCard } from './CharacterCard'
+import { CharacterForm } from './CharacterForm'
 
 export function CharacterDetail({ id, editing }: { id: number; editing: boolean }) {
   const { isPending, isError, data: character, error } = useCharacterById(id)
@@ -51,7 +51,8 @@ export function CharacterDetail({ id, editing }: { id: number; editing: boolean 
         <>
           <CharacterCard character={shown} />
           <Typography variant="body2" color="text.secondary">
-            {shown.gender}{shown.type ? ` - ${shown.type}` : ''}
+            {shown.gender}
+            {shown.type ? ` - ${shown.type}` : ''}
           </Typography>
           {edit && (
             <Chip

@@ -1,4 +1,10 @@
-import { type AnchorHTMLAttributes, createElement, type MouseEventHandler, type Ref, useSyncExternalStore } from 'react'
+import {
+  type AnchorHTMLAttributes,
+  createElement,
+  type MouseEventHandler,
+  type Ref,
+  useSyncExternalStore,
+} from 'react'
 
 const NAVIGATE_EVENT = 'app:navigate'
 

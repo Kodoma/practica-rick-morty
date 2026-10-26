@@ -1,11 +1,11 @@
 import './App.css'
 import { Pagination, Typography } from '@mui/material'
-import { CharacterFiltersForm } from './features/character/components/CharacterFilterForm';
-import { navigate, paths, useLocation } from './lib/router';
-import { parseFilters, serializeFilters, type CharacterFilters } from './features/character/schema';
-import { useCharacterList } from './features/character/query';
-import { CharacterGrid } from './features/character/components/CharacterGrid';
-import { CharacterDetail } from './features/character/components/CharacterDetail';
+import { CharacterDetail } from './features/character/components/CharacterDetail'
+import { CharacterFiltersForm } from './features/character/components/CharacterFilterForm'
+import { CharacterGrid } from './features/character/components/CharacterGrid'
+import { useCharacterList } from './features/character/query'
+import { type CharacterFilters, parseFilters, serializeFilters } from './features/character/schema'
+import { navigate, paths, useLocation } from './lib/router'
 
 function App() {
   const { pathname, searchParams } = useLocation()
@@ -33,13 +33,13 @@ function App() {
         value={filters}
         onChange={(next) => updateFilters({ ...next, page: 1 }, true)}
       />
-        {isPending || !data ? (
-          <Typography variant="h6" component="p" sx={{ mt: 2 }}>
-            Cargando personajes...
-          </Typography>
-        ) : (
-         <CharacterGrid characters={data.results} />
-        )}
+      {isPending || !data ? (
+        <Typography variant="h6" component="p" sx={{ mt: 2 }}>
+          Cargando personajes...
+        </Typography>
+      ) : (
+        <CharacterGrid characters={data.results} />
+      )}
 
       {data && data.results.length > 0 && (
         <Pagination
@@ -47,7 +47,7 @@ function App() {
           count={data.info.pages}
           page={filters.page}
           onChange={(_event, page) => {
-            updateFilters({ page }, true);
+            updateFilters({ page }, true)
           }}
         />
       )}
