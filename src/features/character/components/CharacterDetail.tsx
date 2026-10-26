@@ -47,8 +47,13 @@ export function CharacterDetail({ id, onBack }: Props) {
               gender: shown.gender,
             }}
             onSubmit={async (values) => {
-              await save.mutateAsync({ characterId: id, values, existingId: edit?.id })
-              setIsEditing(false)
+              try {
+                await save.mutateAsync({ characterId: id, values, existingId: edit?.id })
+                setIsEditing(false)
+              } catch {
+                // No hacemos nada: el error ya se muestra arriba con save.error.
+                // Sin este catch, RHF vuelve a lanzar el error y queda como promesa sin manejar.
+              }
             }}
             onCancel={() => setIsEditing(false)}
           />
