@@ -10,8 +10,10 @@ export async function fetchCharacterPage(
   { page, name, status }: CharacterFilters,
   signal?: AbortSignal,
 ): Promise<CharacterPage> {
-  const queryParams = new URLSearchParams({ page: page.toString(), name, status })
-  console.log(`Fetching characters with query params: ${queryParams.toString()}`)
+  const queryParams = new URLSearchParams({ page: page.toString() })
+  // Solo mandamos los filtros que tienen valor (antes iba siempre name=&status=).
+  if (name) queryParams.set('name', name)
+  if (status) queryParams.set('status', status)
   const response = await fetch(`https://rickandmortyapi.com/api/character/?${queryParams}`, {
     signal,
   })
