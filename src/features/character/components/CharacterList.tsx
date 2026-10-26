@@ -10,8 +10,8 @@ import {
 import { useState } from 'react'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { useDebouncedValue } from '../../../lib/useDebouncedValue'
-import { useCharacterList } from '../query'
-import { CHARACTER_STATUSES, type CharacterFilters } from '../schema'
+import { useCharacterList, useEdits } from '../query'
+import { applyEdit, CHARACTER_STATUSES, type CharacterFilters } from '../schema'
 import { CharacterGrid } from './CharacterGrid'
 
 type SearchForm = Pick<CharacterFilters, 'name' | 'status'>
@@ -35,6 +35,10 @@ export function CharacterList({ onSelect }: { onSelect: (id: number) => void }) 
     name: debouncedName,
     status,
   })
+
+  // Las ediciones guardadas en json-server. Es la misma query que usa el detalle,
+  // así que al guardar una edición (invalidateQueries) la lista también se actualiza sola.
+  const { data: edits } = useEdits()
 
   return (
     <Stack spacing={2}>
@@ -77,7 +81,15 @@ export function CharacterList({ onSelect }: { onSelect: (id: number) => void }) 
         <>
           {/* keepPreviousData: mientras carga la página nueva, la anterior se ve atenuada. */}
           <Stack sx={{ opacity: isPlaceholderData ? 0.5 : 1 }}>
-            <CharacterGrid characters={data.results} onSelect={onSelect} />
+            <CharacterGrid
+              characters={data.results.map((character) =>
+                applyEdit(
+                  character,
+                  edits?.find((e) => e.characterId === character.id),
+                ),
+              )}
+              onSelect={onSelect}
+            />
           </Stack>
           {data.info.pages > 1 && (
             <Pagination

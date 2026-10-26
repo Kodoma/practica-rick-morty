@@ -55,3 +55,13 @@ export const CharacterEditsSchema = CharacterFormSchema.extend({
 })
 
 export type CharacterEdit = z.infer<typeof CharacterEditsSchema>
+
+/**
+ * Pantalla = datos de la API + edición local encima.
+ * Solo pisamos los campos editables; el id sigue siendo el del personaje (el de json-server es otro).
+ */
+export function applyEdit(character: Character, edit?: CharacterEdit): Character {
+  if (!edit) return character
+  const { name, status, species, type, gender } = edit
+  return { ...character, name, status, species, type, gender }
+}

@@ -1,6 +1,7 @@
 import { Alert, Button, Chip, Stack, Typography } from '@mui/material'
 import { useState } from 'react'
 import { useCharacterById, useEdits, useSaveEdit } from '../query'
+import { applyEdit } from '../schema'
 import { CharacterCard } from './CharacterCard'
 import { CharacterForm } from './CharacterForm'
 
@@ -26,8 +27,8 @@ export function CharacterDetail({ id, onBack }: Props) {
   }
   if (isError) return <Alert severity="error">{error.message}</Alert>
 
-  // La edición local pisa los datos de la API (menos el id, que en json-server es otro).
-  const shown = edit ? { ...character, ...edit, id: character.id } : character
+  // La misma función que usa la lista: la edición local pisa los datos de la API.
+  const shown = applyEdit(character, edit)
 
   return (
     <Stack spacing={2} sx={{ maxWidth: 480, mx: 'auto' }}>
