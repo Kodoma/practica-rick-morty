@@ -1,9 +1,13 @@
 import { Grid, Typography } from '@mui/material'
-import { paths } from '../../../lib/router'
 import type { Character } from '../schema'
 import { CharacterCard } from './CharacterCard'
 
-export function CharacterGrid({ characters }: { characters: Character[] }) {
+type Props = {
+  characters: Character[]
+  onSelect: (id: number) => void
+}
+
+export function CharacterGrid({ characters, onSelect }: Props) {
   if (characters.length === 0) {
     return (
       <Typography variant="h6" component="p" sx={{ mt: 2 }}>
@@ -16,7 +20,7 @@ export function CharacterGrid({ characters }: { characters: Character[] }) {
     <Grid container spacing={2} component="ul" sx={{ listStyle: 'none', p: 0, m: 0 }}>
       {characters.map((character) => (
         <Grid key={character.id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }} component="li">
-          <CharacterCard character={character} href={paths.detail(character.id)} />
+          <CharacterCard character={character} onSelect={onSelect} />
         </Grid>
       ))}
     </Grid>

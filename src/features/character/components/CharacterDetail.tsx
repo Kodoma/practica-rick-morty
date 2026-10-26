@@ -1,10 +1,14 @@
 import { Alert, Button, Chip, Stack, Typography } from '@mui/material'
-import { navigate, paths, RouterLink } from '../../../lib/router'
+import { useState } from 'react'
 import { useCharacterById, useEdits, useSaveEdit } from '../query'
 import { CharacterCard } from './CharacterCard'
 import { CharacterForm } from './CharacterForm'
 
-export function CharacterDetail({ id, editing }: { id: number; editing: boolean }) {
+type Props = { id: number; onBack: () => void }
+
+export function CharacterDetail({ id, onBack }: Props) {
+  // Ver o editar: un estado local alcanza, no hace falta una ruta.
+  const [isEditing, setIsEditing] = useState(false)
   const { isPending, isError, data: character, error } = useCharacterById(id)
   const { data: edits, isPending: editsPending } = useEdits()
   const save = useSaveEdit()
@@ -13,7 +17,6 @@ export function CharacterDetail({ id, editing }: { id: number; editing: boolean 
 
   // Esperamos también a las ediciones. Si no, al editar antes de que carguen,
   // `edit` es undefined y se crea un duplicado (POST en vez de PUT).
-  // Pasa lo mismo si alguien entra directo a /characters/1/edit.
   if (isPending || editsPending) {
     return (
       <Typography variant="h6" component="p" sx={{ mt: 2 }}>
@@ -28,11 +31,11 @@ export function CharacterDetail({ id, editing }: { id: number; editing: boolean 
 
   return (
     <Stack spacing={2} sx={{ maxWidth: 480, mx: 'auto' }}>
-      <Button component={RouterLink} href={paths.list()} sx={{ alignSelf: 'flex-start' }}>
+      <Button onClick={onBack} sx={{ alignSelf: 'flex-start' }}>
         ← Volver
       </Button>
 
-      {editing ? (
+      {isEditing ? (
         <>
           {save.isError && <Alert severity="error">{save.error.message}</Alert>}
           <CharacterForm
@@ -45,9 +48,9 @@ export function CharacterDetail({ id, editing }: { id: number; editing: boolean 
             }}
             onSubmit={async (values) => {
               await save.mutateAsync({ characterId: id, values, existingId: edit?.id })
-              navigate(paths.detail(id))
+              setIsEditing(false)
             }}
-            onCancel={() => navigate(paths.detail(id))}
+            onCancel={() => setIsEditing(false)}
           />
         </>
       ) : (
@@ -64,7 +67,7 @@ export function CharacterDetail({ id, editing }: { id: number; editing: boolean 
               sx={{ alignSelf: 'flex-start' }}
             />
           )}
-          <Button variant="contained" component={RouterLink} href={paths.edit(id)}>
+          <Button variant="contained" onClick={() => setIsEditing(true)}>
             Editar
           </Button>
         </>

@@ -16,7 +16,7 @@ import { CharacterGrid } from './CharacterGrid'
 
 type SearchForm = Pick<CharacterFilters, 'name' | 'status'>
 
-export function CharacterList() {
+export function CharacterList({ onSelect }: { onSelect: (id: number) => void }) {
   // Los filtros también pasan por react-hook-form: el enunciado dice "every input".
   const { control } = useForm<SearchForm>({ defaultValues: { name: '', status: '' } })
   const name = useWatch({ control, name: 'name' })
@@ -77,7 +77,7 @@ export function CharacterList() {
         <>
           {/* keepPreviousData: mientras carga la página nueva, la anterior se ve atenuada. */}
           <Stack sx={{ opacity: isPlaceholderData ? 0.5 : 1 }}>
-            <CharacterGrid characters={data.results} />
+            <CharacterGrid characters={data.results} onSelect={onSelect} />
           </Stack>
           {data.info.pages > 1 && (
             <Pagination

@@ -1,5 +1,4 @@
 import { Card, CardActionArea, CardContent, CardMedia, Chip, Typography } from '@mui/material'
-import { RouterLink } from '../../../lib/router'
 import type { Character } from '../schema'
 
 // as const: TypeScript sabe que los valores son exactamente estos, que es lo que pide `color`.
@@ -11,11 +10,11 @@ const statusColor = {
 
 type Props = {
   character: Character
-  /** Si viene, la card entera es un link (en la grilla). Sin href es solo lectura (en el detalle). */
-  href?: string
+  /** Si viene, la card entera es clickeable (en la grilla). Sin onSelect es solo lectura (en el detalle). */
+  onSelect?: (id: number) => void
 }
 
-export function CharacterCard({ character, href }: Props) {
+export function CharacterCard({ character, onSelect }: Props) {
   const content = (
     <>
       <CardMedia component="img" image={character.image} alt={character.name} loading="lazy" />
@@ -38,8 +37,9 @@ export function CharacterCard({ character, href }: Props) {
 
   return (
     <Card sx={{ height: '100%' }}>
-      {href ? (
-        <CardActionArea component={RouterLink} href={href} sx={{ height: '100%' }}>
+      {onSelect ? (
+        // CardActionArea es un botón accesible: también se usa con el teclado.
+        <CardActionArea onClick={() => onSelect(character.id)} sx={{ height: '100%' }}>
           {content}
         </CardActionArea>
       ) : (
