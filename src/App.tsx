@@ -1,5 +1,4 @@
-import './App.css'
-import { Alert, Pagination, Typography } from '@mui/material'
+import { Alert, Container, Pagination, Stack, Typography } from '@mui/material'
 import { CharacterDetail } from './features/character/components/CharacterDetail'
 import { CharacterFiltersForm } from './features/character/components/CharacterFilterForm'
 import { CharacterGrid } from './features/character/components/CharacterGrid'
@@ -19,42 +18,48 @@ function App() {
 
   if (detailMatch) {
     return (
-      <>
-        <h1>Personajes</h1>
+      <Container sx={{ py: 4 }}>
+        <Typography variant="h4" component="h1" sx={{ mb: 2 }}>
+          Personajes
+        </Typography>
         <CharacterDetail id={Number(detailMatch[1])} editing={!!detailMatch[2]} />
-      </>
+      </Container>
     )
   }
 
   return (
-    <>
-      <h1>Personajes</h1>
-      <CharacterFiltersForm
-        value={filters}
-        onChange={(next) => updateFilters({ ...next, page: 1 }, true)}
-      />
-      {isPending ? (
-        <Typography variant="h6" component="p" sx={{ mt: 2 }}>
-          Cargando personajes...
+    <Container sx={{ py: 4 }}>
+      <Stack spacing={2}>
+        <Typography variant="h4" component="h1">
+          Personajes
         </Typography>
-      ) : isError ? (
-        // Antes este caso caía en "Cargando..." para siempre.
-        <Alert severity="error">{error.message}</Alert>
-      ) : (
-        <CharacterGrid characters={data.results} />
-      )}
-
-      {data && data.results.length > 0 && (
-        <Pagination
-          sx={{ alignSelf: 'center' }}
-          count={data.info.pages}
-          page={filters.page}
-          onChange={(_event, page) => {
-            updateFilters({ page }, true)
-          }}
+        <CharacterFiltersForm
+          value={filters}
+          onChange={(next) => updateFilters({ ...next, page: 1 }, true)}
         />
-      )}
-    </>
+        {isPending ? (
+          <Typography variant="h6" component="p" sx={{ mt: 2 }}>
+            Cargando personajes...
+          </Typography>
+        ) : isError ? (
+          // Antes este caso caía en "Cargando..." para siempre.
+          <Alert severity="error">{error.message}</Alert>
+        ) : (
+          <CharacterGrid characters={data.results} />
+        )}
+
+        {data && data.results.length > 0 && (
+          <Pagination
+            sx={{ alignSelf: 'center' }}
+            count={data.info.pages}
+            page={filters.page}
+            onChange={(_event, page) => {
+              updateFilters({ page }, true)
+            }}
+          />
+        )}
+      </Stack>
+    </Container>
   )
 }
 

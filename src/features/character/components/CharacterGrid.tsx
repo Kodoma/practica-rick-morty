@@ -8,10 +8,10 @@ export function CharacterGrid({ characters }: { characters: Character[] }) {
       No se encontraron personajes.
     </Typography>
   ) : (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} component="ul" sx={{ listStyle: 'none', p: 0, m: 0 }}>
       {characters.map((character) => (
         <Grid key={character.id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }} component="li">
-          <Card style={{ marginBottom: '1rem', padding: '1rem' }}>
+          <Card sx={{ p: 2 }}>
             <CardActionArea
               component={RouterLink}
               href={paths.detail(character.id)}
