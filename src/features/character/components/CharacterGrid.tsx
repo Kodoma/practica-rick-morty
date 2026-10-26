@@ -1,8 +1,9 @@
 import { Card, CardActionArea, CardMedia, Chip, Grid, Typography } from '@mui/material'
 import { paths, RouterLink } from '../../../lib/router'
+import type { Character } from '../schema'
 
-export function CharacterGrid({ characters }: { characters: any[] }) {
-  return !characters || characters.length === 0 ? (
+export function CharacterGrid({ characters }: { characters: Character[] }) {
+  return characters.length === 0 ? (
     <Typography variant="h6" component="p" sx={{ mt: 2 }}>
       No se encontraron personajes.
     </Typography>

@@ -18,13 +18,13 @@ export const CharacterCard = ({
         flexDirection: 'column',
       }}
     >
-      <CardMedia component="img" image={String(character.image)} alt={String(character.name)} />
+      <CardMedia component="img" image={character.image} alt={character.name} />
       <CardContent>
         <Typography variant="h6" component="h2">
-          {String(character?.name)}
+          {character.name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {character?.species} - {character?.status}
+          {character.species} - {character.status}
         </Typography>
       </CardContent>
     </Card>
