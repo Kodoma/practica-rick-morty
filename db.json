@@ -1,0 +1,15 @@
+{
+  "edits": [
+    {
+      "name": "Ricardo Sanchez",
+      "status": "Alive",
+      "species": "Human",
+      "type": "",
+      "gender": "Male",
+      "characterId": 1,
+      "updatedAt": "2026-10-26T14:14:44.664Z",
+      "id": "71p1rID9Jf8"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
