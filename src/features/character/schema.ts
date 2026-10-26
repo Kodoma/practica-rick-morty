@@ -1,31 +1,16 @@
 import z from 'zod'
 
-export function serializeFilters({ page, name, status }: CharacterFilters): string {
-  const params = new URLSearchParams()
-  if (page > 1) params.set('page', String(page))
-  if (name) params.set('name', name)
-  if (status) params.set('status', status)
-  return params.toString()
-}
-
-export function parseFilters(params: URLSearchParams): CharacterFilters {
-  return CharacterFiltersSchema.parse({
-    page: params.get('page') ?? undefined,
-    name: params.get('name') ?? undefined,
-    status: params.get('status') ?? undefined,
-  })
-}
-
 export const CHARACTER_STATUSES = ['Alive', 'Dead', 'unknown'] as const
 export const CHARACTER_GENDERS = ['Female', 'Male', 'Genderless', 'unknown'] as const
 
-export const CharacterFiltersSchema = z.object({
-  page: z.coerce.number().int().min(1).catch(1),
-  name: z.string().trim().catch(''),
-  status: z.enum(CHARACTER_STATUSES).or(z.literal('')).catch(''),
-})
+export type CharacterStatus = (typeof CHARACTER_STATUSES)[number]
 
-export type CharacterFilters = z.infer<typeof CharacterFiltersSchema>
+/** Lo que se le pide a la API para listar. Vive en el estado de CharacterList. */
+export type CharacterFilters = {
+  page: number
+  name: string
+  status: CharacterStatus | ''
+}
 
 export const CharacterSchema = z.object({
   id: z.number(),
@@ -47,13 +32,6 @@ export const CharacterPageSchema = z.object({
 export type CharacterPage = z.infer<typeof CharacterPageSchema>
 
 export type Character = z.infer<typeof CharacterSchema>
-
-export type FilterValues = Pick<CharacterFilters, 'name' | 'status'>
-
-export type CharacterFiltersFormProps = {
-  value: FilterValues
-  onChange: (next: FilterValues) => void
-}
 
 // ── Formulario de edición ─────────────────────────────────────────
 
