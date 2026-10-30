@@ -7,8 +7,28 @@
       "type": "",
       "gender": "Male",
       "characterId": 1,
-      "updatedAt": "2026-10-26T14:14:44.664Z",
+      "updateAt": "2026-10-27T15:55:45.691Z",
       "id": "71p1rID9Jf8"
+    },
+    {
+      "name": "Ricardo Sanchez",
+      "status": "Alive",
+      "species": "Human",
+      "type": "",
+      "gender": "Male",
+      "characterId": 1,
+      "updateAt": "2026-10-27T15:56:30.346Z",
+      "id": "nDmEde5Wh8s"
+    },
+    {
+      "name": "Ricardo Sanchez",
+      "status": "Alive",
+      "species": "Human",
+      "type": "",
+      "gender": "Male",
+      "characterId": 1,
+      "updateAt": "2026-10-27T15:56:34.046Z",
+      "id": "9AE-pS2hlcg"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
